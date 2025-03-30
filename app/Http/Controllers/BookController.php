@@ -11,9 +11,9 @@ class BookController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function showBooks()
     {
-        //
+        return view("user.home");
     }
 
     /**

@@ -15,6 +15,8 @@ return new class extends Migration
             $table->id();
             $table->string('title');
             $table->string('author');
+            $table->text('description');
+            $table->string('image');
             $table->foreignId('category_id')->constrained()->onDelete('cascade');
             $table->enum('status', ['available', 'borrowed', 'reserved'])->default('available');
             $table->timestamps();
