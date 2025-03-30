@@ -5,16 +5,40 @@ namespace App\Http\Controllers;
 use App\Models\Borrowing;
 use App\Http\Requests\StoreBorrowingRequest;
 use App\Http\Requests\UpdateBorrowingRequest;
+use App\Models\Book;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 
 class BorrowingController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function borrow(Book $book)
     {
-        //
+        $user = auth()->user();
+
+        DB::beginTransaction();
+
+        try {
+            $book->update(["status" => "borrowed"]);
+
+            Borrowing::create([
+                "user_id" => $user->id,
+                "book_id" => $book->id,
+                "borrowed_at" => Carbon::now(),
+                "returned_at" => Carbon::now()->addWeek(),
+            ]);
+
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return redirect()->back()->with("error", "Failed to borrow the book.");
+        }
+
+        return redirect()->back()->with("done", "You have borrowed the book successfully. Check your library.");
     }
+
 
     /**
      * Show the form for creating a new resource.

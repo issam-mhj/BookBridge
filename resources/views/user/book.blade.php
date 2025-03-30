@@ -180,6 +180,19 @@
 
     <!-- Main Content -->
     <main class="container mx-auto p-4 my-8">
+        @if (session('done'))
+            <div class="fixed top-0 left-0 right-0 bg-green-500/90 text-white p-4 text-center z-50 backdrop-blur-sm"
+                id="successMessage">
+                <div class="flex items-center justify-center space-x-2 animate-slideIn">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd"
+                            d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                            clip-rule="evenodd" />
+                    </svg>
+                    <span class="font-medium">{{ session('done') }}</span>
+                </div>
+            </div>
+        @endif
         <div class="mb-6">
             <a href="/home">
                 <button id="backBtn"
@@ -211,7 +224,7 @@
             <!-- Book Details -->
             <div class="md:w-2/3 md:pl-8 mt-6 md:mt-0">
                 <h2 class="text-3xl font-bold text-amber-900 magic-text">{{ $book['title'] }}</h2>
-                <h3 class="text-xl text-gray-700 mt-2">by {{ $book['title'] }}</h3>
+                <h3 class="text-xl text-gray-700 mt-2">by {{ $book['author'] }}</h3>
 
                 <div class="flex items-center gap-4 mt-4">
                     <span
@@ -238,11 +251,14 @@
                             <span>not available</span>
                         @endif
                     </div>
-
-                    <button id="borrowBtn"
-                        class="bg-amber-800 text-white px-6 py-3 rounded-lg font-semibold btn-borrow hover:bg-amber-700">
-                        Borrow Book
-                    </button>
+                    @if ($book['status'] == 'available')
+                        <form action="/borrow/{{ $book['id'] }}" method="post">
+                            @csrf
+                            <button
+                                class="bg-amber-800 text-white px-6 py-3 rounded-lg font-semibold btn-borrow hover:bg-amber-700">
+                                Borrow Book
+                            </button>
+                    @endif
                 </div>
 
 
@@ -255,20 +271,16 @@
             <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
                 @foreach ($lastFourBooks as $book)
                     <!-- Book 1 -->
-                    <div class="bg-white rounded-lg shadow-md p-4 hover-shadow transition float-effect">
-                        <img src="{{ $book['image'] }}" alt="The Hobbit" class="w-full h-64 object-cover rounded mb-4">
-                        <h4 class="font-semibold text-amber-900">{{ $book['title'] }}</h4>
-                        <p class="text-sm text-gray-600">{{ $book['author'] }}</p>
-                    </div>
+                    <a href="/book/{{ $book['id'] }}">
+                        <div class="bg-white rounded-lg shadow-md p-4 hover-shadow transition float-effect">
+                            <img src="{{ $book['image'] }}" alt="The Hobbit"
+                                class="w-full h-64 object-cover rounded mb-4">
+                            <h4 class="font-semibold text-amber-900">{{ $book['title'] }}</h4>
+                            <p class="text-sm text-gray-600">{{ $book['author'] }}</p>
+                        </div>
+                    </a>
                 @endforeach
             </div>
-        </div>
-
-        <!-- Notification -->
-        <div id="notification"
-            class="fixed bottom-4 right-4 bg-amber-700 text-white p-4 rounded-lg shadow-lg popup-notification flex items-center gap-3">
-            <i class="fas fa-check-circle"></i>
-            <span>Book has been added to your borrowing list!</span>
         </div>
     </main>
 
@@ -443,7 +455,15 @@
 
             // Run typing effect on page load
             setTimeout(typeDescription, 1000);
+
+
         });
+        const successMessage = document.getElementById("successMessage");
+        if (successMessage) {
+            setTimeout(() => {
+                successMessage.style.display = 'none';
+            }, 5000);
+        }
     </script>
 </body>
 
