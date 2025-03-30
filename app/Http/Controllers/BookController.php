@@ -13,7 +13,8 @@ class BookController extends Controller
      */
     public function showBooks()
     {
-        return view("user.home");
+        $books = Book::all();
+        return view("user.home", ["books" => $books]);
     }
 
     /**
