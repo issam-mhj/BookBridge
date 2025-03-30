@@ -13,6 +13,8 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/home', [BookController::class, "showBooks"]);
     Route::get('/book/{book}', [BookController::class, "bookDetails"]);
     Route::post('/borrow/{book}', [BorrowingController::class, "borrow"]);
+    Route::get('/mybooks', [BookController::class, "mybooks"]);
+    Route::post('/returnBook/{borrowing}', [BorrowingController::class, "returnBook"]);
 });
 
 require __DIR__ . '/auth.php';

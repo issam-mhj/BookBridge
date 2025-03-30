@@ -43,9 +43,9 @@ class BorrowingController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function returnBook(Borrowing $borrowing)
     {
-        //
+        dd($borrowing);
     }
 
     /**
