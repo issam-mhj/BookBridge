@@ -6,7 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Library Lending Lounge</title>
     <script src="https://cdn.tailwindcss.com"></script>
-
     <script src="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
     <style>
@@ -143,6 +142,15 @@
         .rotate-book:hover {
             transform: rotate3d(0, 1, 0, 15deg);
         }
+
+        /* Additional styles for logout dropdown */
+        #logout-menu {
+            min-width: 120px;
+        }
+
+        #logout-menu button {
+            font-family: 'Open Sans', sans-serif;
+        }
     </style>
 </head>
 
@@ -166,9 +174,24 @@
                     <i class="fas fa-book-bookmark"></i>
                     <span>My Books</span>
                 </a>
-                <div
-                    class="w-10 h-10 bg-amber-600 rounded-full flex items-center justify-center cursor-pointer hover:bg-amber-500 transition duration-300">
-                    <i class="fas fa-user"></i>
+                <!-- User Icon with Logout Dropdown -->
+                <div class="relative">
+                    <div id="user-profile"
+                        class="w-10 h-10 bg-amber-600 rounded-full flex items-center justify-center cursor-pointer hover:bg-amber-500 transition duration-300">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <!-- Hidden logout menu -->
+                    <div id="logout-menu"
+                        class="absolute right-0 mt-2 bg-white text-gray-800 rounded shadow-lg py-2 hidden animate__animated animate__fadeIn">
+                        <form action="/logout" method="post">
+                            @csrf
+                            <button id="logout-button"
+                                class="w-full text-left px-4 py-2 hover:bg-gray-100 flex items-center space-x-2">
+                                <i class="fas fa-sign-out-alt"></i>
+                                <span>Logout</span>
+                            </button>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
@@ -177,7 +200,7 @@
     <!-- Main Content -->
     <main class="container mx-auto px-4 py-6">
         <!-- Back Button -->
-        <a href="#"
+        <a href="/home"
             class="inline-flex items-center px-4 py-2 bg-white rounded-lg shadow-sm hover:bg-gray-100 transition duration-300 mb-6 slide-in">
             <i class="fas fa-arrow-left mr-2"></i>
             <span>Back to Library</span>
@@ -243,9 +266,16 @@
                     <div class="flex flex-col items-end space-y-3">
                         <span
                             class="inline-flex items-center px-3 py-1 rounded-full bg-green-100 text-green-800 font-medium text-sm">
-                            <i class="far fa-clock mr-1"></i> {{ $daysTo }} days remaining
+                            <i class="far fa-clock mr-1"></i>
+                            @php
+                                $now = \Carbon\Carbon::now();
+                                $futureDate = \Carbon\Carbon::parse($book['returned_at']);
+                                $daysLeft = (int) $now->diffInDays($futureDate);
+                            @endphp
+                            {{ $daysLeft }} days remaining
                         </span>
                         <form action="/returnBook/{{ $book->id }}" method="POST">
+                            @csrf
                             <button
                                 class="flex items-center px-4 py-2 bg-amber-700 text-white rounded-md hover:bg-amber-800 transition duration-300">
                                 <i class="fas fa-undo-alt mr-2"></i>
@@ -322,7 +352,7 @@
 
     <!-- JavaScript -->
     <script>
-        // Modal functionality
+        // Modal functionality for book return
         const returnButton = document.getElementById('return-button');
         const returnModal = document.getElementById('return-modal');
         const cancelReturn = document.getElementById('cancel-return');
@@ -330,9 +360,11 @@
         const borrowedBooksContainer = document.getElementById('borrowed-books-container');
         const successNotification = document.getElementById('success-notification');
 
-        returnButton.addEventListener('click', () => {
-            returnModal.classList.remove('hidden');
-        });
+        if (returnButton) {
+            returnButton.addEventListener('click', () => {
+                returnModal.classList.remove('hidden');
+            });
+        }
 
         cancelReturn.addEventListener('click', () => {
             returnModal.classList.add('hidden');
@@ -355,15 +387,16 @@
             // Optional: Remove the book from display
             setTimeout(() => {
                 borrowedBooksContainer.innerHTML = `
-                        <div class="p-6 text-center">
-                            <i class="fas fa-book-open text-amber-300 text-5xl mb-3"></i>
-                            <h4 class="text-xl font-bold libre text-amber-900">No books currently borrowed</h4>
-                            <p class="text-gray-600 mt-2">Visit the library to discover your next great read!</p>
-                            <a href="#" class="inline-block mt-4 px-4 py-2 bg-amber-600 text-white rounded-md hover:bg-amber-700 transition duration-300">
-                                <i class="fas fa-search mr-1"></i> Browse Books
-                            </a>
-                        </div>
-                    `;
+          <div class="p-6 text-center">
+            <i class="fas fa-book-open text-amber-300 text-5xl mb-3"></i>
+            <h4 class="text-xl font-bold libre text-amber-900">No books currently borrowed</h4>
+            <p class="text-gray-600 mt-2">Visit the library to discover your next great read!</p>
+            <a href="#"
+              class="inline-block mt-4 px-4 py-2 bg-amber-600 text-white rounded-md hover:bg-amber-700 transition duration-300">
+              <i class="fas fa-search mr-1"></i> Browse Books
+            </a>
+          </div>
+        `;
                 borrowedBooksContainer.style.animation = 'fadeIn 0.5s forwards';
             }, 500);
         });
@@ -383,6 +416,23 @@
 
         searchInput.addEventListener('blur', () => {
             searchInput.classList.remove('ring-2');
+        });
+
+        // Logout dropdown functionality
+        const userProfile = document.getElementById('user-profile');
+        const logoutMenu = document.getElementById('logout-menu');
+
+        // Toggle the visibility of the logout menu when clicking on the user profile icon
+        userProfile.addEventListener('click', (e) => {
+            e.stopPropagation(); // Prevent click event bubbling to the document
+            logoutMenu.classList.toggle('hidden');
+        });
+
+        // Optional: Click outside to close the logout menu
+        document.addEventListener('click', () => {
+            if (!logoutMenu.classList.contains('hidden')) {
+                logoutMenu.classList.add('hidden');
+            }
         });
     </script>
 </body>

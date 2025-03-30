@@ -45,7 +45,18 @@ class BorrowingController extends Controller
      */
     public function returnBook(Borrowing $borrowing)
     {
-        dd($borrowing);
+        DB::beginTransaction();
+
+        try {
+            $borrowing->book->update(["status" => "available"]);
+            $borrowing->delete();
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return redirect()->back()->with("error", "Failed to borrow the book.");
+        }
+
+        return redirect("/mybooks");
     }
 
     /**

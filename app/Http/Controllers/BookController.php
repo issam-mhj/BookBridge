@@ -37,10 +37,7 @@ class BookController extends Controller
         $myBooks = Borrowing::where("user_id", $userId)
             ->where("status", "borrowed")
             ->get();
-        $now = Carbon::now();
-        $futureDate = Carbon::parse($myBooks[0]->returned_at);
-        $daysLeft = (int) $now->diffInDays($futureDate);
-        return view("user.mybooks", ["books" => $myBooks, "daysTo" => $daysLeft]);
+        return view("user.mybooks", ["books" => $myBooks]);
     }
 
     /**
