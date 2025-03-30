@@ -84,45 +84,20 @@
 
         <!-- Bookshelf Section -->
         <section id="bookShelf" class="fade-in shelf p-6">
-            <h2 class="text-2xl text-white font-bold mb-4">Search Results</h2>
             <!-- Book Grid -->
             <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
                 <!-- Single Book Item -->
-                <div
-                    class="bg-white bg-opacity-80 rounded shadow-lg p-4 transition transform hover:-translate-y-1 hover:shadow-xl">
-                    <img src="https://raw.githubusercontent.com/benoitvallon/100-best-books/master/static/PrideAndPrejudice.jpg"
-                        alt="Pride and Prejudice cover" class="w-full h-64 object-cover mb-4 rounded" />
-                    <h3 class="text-xl font-semibold text-amber-900 text-center">Pride and Prejudice</h3>
-                </div>
-
-                <div
-                    class="bg-white bg-opacity-80 rounded shadow-lg p-4 transition transform hover:-translate-y-1 hover:shadow-xl">
-                    <img src="https://raw.githubusercontent.com/benoitvallon/100-best-books/master/static/ToKillAMockingBird.jpg"
-                        alt="To Kill a Mockingbird cover" class="w-full h-64 object-cover mb-4 rounded" />
-                    <h3 class="text-xl font-semibold text-amber-900 text-center">To Kill a Mockingbird</h3>
-                </div>
-
-                <div
-                    class="bg-white bg-opacity-80 rounded shadow-lg p-4 transition transform hover:-translate-y-1 hover:shadow-xl">
-                    <img src="https://raw.githubusercontent.com/benoitvallon/100-best-books/master/static/TheGreatGatsby.jpg"
-                        alt="The Great Gatsby cover" class="w-full h-64 object-cover mb-4 rounded" />
-                    <h3 class="text-xl font-semibold text-amber-900 text-center">The Great Gatsby</h3>
-                </div>
-
-                <div
-                    class="bg-white bg-opacity-80 rounded shadow-lg p-4 transition transform hover:-translate-y-1 hover:shadow-xl">
-                    <img src="https://raw.githubusercontent.com/benoitvallon/100-best-books/master/static/TheCatcherInTheRye.jpg"
-                        alt="The Catcher in the Rye cover" class="w-full h-64 object-cover mb-4 rounded" />
-                    <h3 class="text-xl font-semibold text-amber-900 text-center">The Catcher in the Rye</h3>
-                </div>
-
-                <div
-                    class="bg-white bg-opacity-80 rounded shadow-lg p-4 transition transform hover:-translate-y-1 hover:shadow-xl">
-                    <img src="https://raw.githubusercontent.com/benoitvallon/100-best-books/master/static/MobyDick.jpg"
-                        alt="Moby-Dick cover" class="w-full h-64 object-cover mb-4 rounded" />
-                    <h3 class="text-xl font-semibold text-amber-900 text-center">Moby-Dick</h3>
-                </div>
-                <!-- Repeat more books as needed... -->
+                @forelse ($books as $book)
+                    <div
+                        class="bg-white bg-opacity-80 rounded shadow-lg p-4 transition transform hover:-translate-y-1 hover:shadow-xl">
+                        <img src="{{ $book['image'] }}" alt="Pride and Prejudice cover"
+                            class="w-full h-64 object-cover mb-4 rounded" />
+                        <h3 class="text-xl font-semibold text-amber-900 text-center">{{ $book['title'] }}</h3>
+                        <h3 class="text-xs text-amber-700 text-center">by {{ $book['author'] }}</h3>
+                    </div>
+                @empty
+                    no books available
+                @endforelse
             </div>
         </section>
     </main>
