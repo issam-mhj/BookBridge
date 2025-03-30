@@ -8,7 +8,8 @@ Route::get('/', function () {
 });
 
 Route::middleware(['auth'])->group(function () {
-    Route::get('/home',[BookController::class,"showBooks"]);
+    Route::get('/home', [BookController::class, "showBooks"]);
+    Route::get('/book/{book}', [BookController::class, "bookDetails"]);
 });
 
 require __DIR__ . '/auth.php';

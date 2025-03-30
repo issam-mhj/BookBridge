@@ -46,22 +46,27 @@
 </head>
 
 <body class="min-h-screen flex flex-col">
-    <!-- Navigation Bar -->
-    <nav class="bg-amber-900 bg-opacity-90 py-4 px-8 flex items-center justify-between">
-        <div class="text-white text-2xl font-bold">
-            <a href="#" class="hover:opacity-80 transition-opacity">
-                BookBridge
-            </a>
+    <!-- Header -->
+    <header class="bg-amber-900 text-white p-4 flex justify-between items-center shadow-lg">
+        <div class="flex items-center gap-2">
+            <i class="fas fa-book-open text-2xl"></i>
+            <h1 class="text-2xl font-bold">BookBridge</h1>
         </div>
-        <div class="space-x-4">
-            <button class="text-white bg-amber-700 hover:bg-amber-800 px-4 py-2 rounded">
-                My Borrowed Books
-            </button>
-            <button class="text-white bg-amber-700 hover:bg-amber-800 px-4 py-2 rounded">
-                My profile
-            </button>
+
+        <div class="relative w-1/3">
+            <input type="text" placeholder="Search books..."
+                class="w-full px-4 py-2 rounded-full focus:outline-none focus:ring-2 focus:ring-amber-600 transition">
+            <i class="fas fa-search absolute right-4 top-3 text-gray-500"></i>
         </div>
-    </nav>
+
+        <div class="flex items-center gap-4">
+            <button class="hover:underline hover:text-amber-200 transition">My Books</button>
+            <div class="w-8 h-8 bg-white rounded-full flex items-center justify-center text-amber-900">
+                <i class="fas fa-user"></i>
+            </div>
+        </div>
+    </header>
+
 
     <!-- Main Content -->
     <main class="flex-grow container mx-auto px-4 py-8">
@@ -88,13 +93,13 @@
             <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
                 <!-- Single Book Item -->
                 @forelse ($books as $book)
-                    <div
+                    <a href="/book/{{ $book['id'] }}"
                         class="bg-white bg-opacity-80 rounded shadow-lg p-4 transition transform hover:-translate-y-1 hover:shadow-xl">
                         <img src="{{ $book['image'] }}" alt="Pride and Prejudice cover"
                             class="w-full h-64 object-cover mb-4 rounded" />
                         <h3 class="text-xl font-semibold text-amber-900 text-center">{{ $book['title'] }}</h3>
                         <h3 class="text-xs text-amber-700 text-center">by {{ $book['author'] }}</h3>
-                    </div>
+                    </a>
                 @empty
                     no books available
                 @endforelse
@@ -103,9 +108,28 @@
     </main>
 
     <!-- Footer -->
-    <footer class="bg-amber-900 bg-opacity-90 text-white p-4 text-center">
-        <p class="mb-2">© 2025 BookBridge</p>
+    <footer class="bg-amber-900 text-white py-6 mt-12">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="mb-4 md:mb-0">
+                    <h3 class="text-xl font-bold">BookBridge</h3>
+                    <p class="mt-2 text-amber-200">Your gateway to literary adventures</p>
+                </div>
+
+                <div class="flex gap-6">
+                    <a href="#" class="hover:text-amber-200 transition"><i class="fab fa-facebook fa-lg"></i></a>
+                    <a href="#" class="hover:text-amber-200 transition"><i class="fab fa-twitter fa-lg"></i></a>
+                    <a href="#" class="hover:text-amber-200 transition"><i class="fab fa-instagram fa-lg"></i></a>
+                    <a href="#" class="hover:text-amber-200 transition"><i class="fab fa-pinterest fa-lg"></i></a>
+                </div>
+            </div>
+
+            <div class="border-t border-amber-800 mt-6 pt-6 text-center text-sm text-amber-200">
+                &copy; 2025 BookBridge. All rights reserved.
+            </div>
+        </div>
     </footer>
+
 
     <!-- JavaScript for fade-in effect -->
     <script>
