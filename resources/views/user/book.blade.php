@@ -157,26 +157,32 @@
 </head>
 
 <body>
-    <!-- Header -->
-    <header class="bg-amber-900 text-white p-4 flex justify-between items-center shadow-lg">
-        <div class="flex items-center gap-2">
-            <i class="fas fa-book-open text-2xl"></i>
-            <h1 class="text-2xl font-bold">BookBridge</h1>
-        </div>
+    <!-- Navigation Bar -->
+    <nav class="bg-amber-800 text-white shadow-lg">
+        <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+            <div class="flex items-center space-x-3">
+                <i class="fas fa-book-open text-2xl"></i>
+                <h1 class="text-2xl font-bold libre tracking-wide">BookBridge</h1>
+            </div>
 
-        <div class="relative w-1/3">
-            <input type="text" placeholder="Search books..."
-                class="w-full px-4 py-2 rounded-full focus:outline-none focus:ring-2 focus:ring-amber-600 transition">
-            <i class="fas fa-search absolute right-4 top-3 text-gray-500"></i>
-        </div>
+            <div class="relative w-1/3">
+                <input type="text" placeholder="Search books..."
+                    class="w-full py-2 px-4 rounded-full bg-amber-700 text-white placeholder-amber-200 border border-amber-600 focus:outline-none focus:ring-2 focus:ring-amber-400 search-expand">
+                <i class="fas fa-search absolute right-4 top-3 text-amber-300"></i>
+            </div>
 
-        <div class="flex items-center gap-4">
-            <button class="hover:underline hover:text-amber-200 transition">My Books</button>
-            <div class="w-8 h-8 bg-white rounded-full flex items-center justify-center text-amber-900">
-                <i class="fas fa-user"></i>
+            <div class="flex items-center space-x-6">
+                <a href="/mybooks" class="flex items-center space-x-2 hover:text-amber-200 transition duration-300">
+                    <i class="fas fa-book-bookmark"></i>
+                    <span>My Books</span>
+                </a>
+                <div
+                    class="w-10 h-10 bg-amber-600 rounded-full flex items-center justify-center cursor-pointer hover:bg-amber-500 transition duration-300">
+                    <i class="fas fa-user"></i>
+                </div>
             </div>
         </div>
-    </header>
+    </nav>
 
     <!-- Main Content -->
     <main class="container mx-auto p-4 my-8">
@@ -297,7 +303,8 @@
                     <a href="#" class="hover:text-amber-200 transition"><i class="fab fa-facebook fa-lg"></i></a>
                     <a href="#" class="hover:text-amber-200 transition"><i class="fab fa-twitter fa-lg"></i></a>
                     <a href="#" class="hover:text-amber-200 transition"><i class="fab fa-instagram fa-lg"></i></a>
-                    <a href="#" class="hover:text-amber-200 transition"><i class="fab fa-pinterest fa-lg"></i></a>
+                    <a href="#" class="hover:text-amber-200 transition"><i
+                            class="fab fa-pinterest fa-lg"></i></a>
                 </div>
             </div>
 

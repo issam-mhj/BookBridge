@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Book;
 use App\Http\Requests\StoreBookRequest;
 use App\Http\Requests\UpdateBookRequest;
+use App\Models\Borrowing;
+use Carbon\Carbon;
 
 class BookController extends Controller
 {
@@ -29,9 +31,16 @@ class BookController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreBookRequest $request)
+    public function mybooks()
     {
-        //
+        $userId = auth()->user()->id;
+        $myBooks = Borrowing::where("user_id", $userId)
+            ->where("status", "borrowed")
+            ->get();
+        $now = Carbon::now();
+        $futureDate = Carbon::parse($myBooks[0]->returned_at);
+        $daysLeft = (int) $now->diffInDays($futureDate);
+        return view("user.mybooks", ["books" => $myBooks, "daysTo" => $daysLeft]);
     }
 
     /**
