@@ -20,9 +20,10 @@ class BookController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function bookDetails(Book $book)
     {
-        //
+        $lastFourBooks = Book::latest()->take(4)->get();
+        return view("user.book", ["book" => $book, "lastFourBooks" => $lastFourBooks]);
     }
 
     /**
