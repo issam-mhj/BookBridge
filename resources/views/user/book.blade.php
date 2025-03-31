@@ -213,7 +213,7 @@
             <!-- Book Cover -->
             <div class="md:w-1/3 flex justify-center items-start md:p-6">
                 <div class="relative">
-                    <img src="{{ $book['image'] }}" alt="The Lord of the Rings book cover"
+                    <img src="{{ asset('storage/' . $book['image']) }}" alt="The Lord of the Rings book cover"
                         class="book-cover rounded-lg shadow-md hover-shadow">
                     <div class="absolute top-1/3 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-32 h-32 opacity-0 ring-animation"
                         id="magicRing">
@@ -279,7 +279,7 @@
                     <!-- Book 1 -->
                     <a href="/book/{{ $book['id'] }}">
                         <div class="bg-white rounded-lg shadow-md p-4 hover-shadow transition float-effect">
-                            <img src="{{ $book['image'] }}" alt="The Hobbit"
+                            <img src="{{ asset('storage/' . $book['image']) }}" alt="The Hobbit"
                                 class="w-full h-64 object-cover rounded mb-4">
                             <h4 class="font-semibold text-amber-900">{{ $book['title'] }}</h4>
                             <p class="text-sm text-gray-600">{{ $book['author'] }}</p>

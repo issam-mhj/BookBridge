@@ -236,7 +236,7 @@
                 id="borrowed-books-container">
                 <div class="p-6 flex items-center space-x-6 book-hover">
                     <div class="w-32 rotate-book relative">
-                        <img src="{{ $book->book['image'] }}" alt="The Lord of the Rings"
+                        <img src="{{ asset('storage/' . $book['image']) }}" alt="The Lord of the Rings"
                             class="w-full rounded shadow-md page-turn">
                         <div
                             class="absolute top-0 right-0 bg-amber-600 text-white text-xs font-bold px-2 py-1 rounded-bl">

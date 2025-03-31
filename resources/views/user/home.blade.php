@@ -104,7 +104,7 @@
                 @forelse ($books as $book)
                     <a href="/book/{{ $book['id'] }}"
                         class="bg-white bg-opacity-80 rounded shadow-lg p-4 transition transform hover:-translate-y-1 hover:shadow-xl">
-                        <img src="{{ $book['image'] }}" alt="Pride and Prejudice cover"
+                        <img src="{{ asset('storage/' . $book['image']) }}" alt="Pride and Prejudice cover"
                             class="w-full h-64 object-cover mb-4 rounded" />
                         <h3 class="text-xl font-semibold text-amber-900 text-center">{{ $book['title'] }}</h3>
                         <h3 class="text-xs text-amber-700 text-center">by {{ $book['author'] }}</h3>
